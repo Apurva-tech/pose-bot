@@ -137,7 +137,8 @@
           icon = "https://homepages.cae.wisc.edu/~ece533/images/airplane.png";
           var body =
             message + ". Please sit in correctly and click this notification";
-          var notification = new Notification(title, { body, icon });
+          var tag = "pose-bot";
+          var notification = new Notification(title, { body, icon, tag });
         }
 
         // Otherwise, we need to ask the user for permission
@@ -145,7 +146,7 @@
           Notification.requestPermission().then(function (permission) {
             // If the user accepts, let's create a notification
             if (permission === "granted") {
-              var notification = new Notification(title, { body, icon });
+              var notification = new Notification(title, { body, icon, tag });
             }
           });
         }
@@ -213,20 +214,81 @@
     * {
       /* border: 1px dotted green; */
     }
+    main > img {
+      height: 300px;
+    }
   </style>
   <body class="" style="background-color: #232128">
     <div class="landing text-light">
       <!-- Header with logo position: sticky/fixed -->
       <header class="text-center">
         <div class="logo-div">
-          <img src="assets/img/logo.jpg" alt="Logo" class="img img-fluid" />
+          <img src="./assets//img/logo.jpeg" alt="Logo" class="img img-fluid" />
         </div>
       </header>
 
       <!-- Main screen -->
       <main>
         <div class="text-center m-1">
-          <canvas id="canvas" style="border: 1px solid black"></canvas>
+          <div id="demo" class="carousel slide my-3" data-ride="carousel">
+            <ul class="carousel-indicators">
+              <li data-target="#demo" data-slide-to="0" class="active"></li>
+              <li data-target="#demo" data-slide-to="1"></li>
+              <li data-target="#demo" data-slide-to="2"></li>
+            </ul>
+            <div class="carousel-inner">
+              <div class="carousel-item active">
+                <img
+                  src="https://media.istockphoto.com/photos/man-is-bent-over-tabletbad-sitting-posture-at-work-picture-id187491090?k=6&m=187491090&s=612x612&w=0&h=FzREE8-aVN4xTIHHtfNZ8ADE8uMQmPppMjGdJYm7bQs="
+                  alt="Los Angeles"
+                />
+                <div class="carousel-caption">
+                  <!-- <h3 class="text-dark">Back pain?</h3>
+                  <p class="text-dark">
+                    The reason could be bad sitting posture
+                  </p> -->
+                </div>
+              </div>
+              <div class="carousel-item">
+                <img
+                  src="https://buffer.com/resources/content/images/resources/wp-content/uploads/2013/11/Screen-Shot-2013-11-11-at-8.09.23-AM.png"
+                  alt="Chicago"
+                />
+                <div class="carousel-caption">
+                  <!-- <h3>Chicago</h3>
+                  <p>Thank you, Chicago!</p> -->
+                </div>
+              </div>
+              <div class="carousel-item">
+                <img
+                  src="https://scitechdaily.com/images/Human-Spinal-Cord.jpg"
+                  width="80%"
+                  alt="New York"
+                />
+                <div class="carousel-caption">
+                  <!-- <h3>New York</h3>
+                  <p>We love the Big Apple!</p> -->
+                </div>
+              </div>
+              <div class="carousel-item">
+                <img
+                  src="https://news.umich.edu/wp-content/uploads/2019/07/an-epipen-for-spinal-cord-injuries-1.jpg"
+                  alt="Chicago"
+                />
+                <div class="carousel-caption">
+                  <!-- <h3>Chicago</h3>
+                  <p>Thank you, Chicago!</p> -->
+                </div>
+              </div>
+            </div>
+            <a class="carousel-control-prev" href="#demo" data-slide="prev">
+              <span class="carousel-control-prev-icon"></span>
+            </a>
+            <a class="carousel-control-next" href="#demo" data-slide="next">
+              <span class="carousel-control-next-icon"></span>
+            </a>
+          </div>
+          <canvas id="canvas"></canvas>
         </div>
       </main>
       <div class="masthead container text-center">
@@ -241,12 +303,12 @@
           <!-- Button trigger modal -->
           <button
             type="button"
-            class="btn btn-primary m-4 font-weight-bold"
+            class="btn btn-primary m-4 font-weight-bold px-5"
             data-toggle="modal"
             data-target="#exampleModal"
             style="border-radius: 999px"
           >
-            Launch demo modal
+            Learn More.
           </button>
 
           <!-- Modal -->
@@ -276,7 +338,71 @@
                     <span aria-hidden="true">×</span>
                   </button>
                 </div>
-                <div class="modal-body">...</div>
+                <div class="modal-body">
+                  <div id="demo" class="carousel slide" data-ride="carousel">
+                    <ul class="carousel-indicators">
+                      <li
+                        data-target="#demo"
+                        data-slide-to="0"
+                        class="active"
+                      ></li>
+                      <li data-target="#demo" data-slide-to="1"></li>
+                      <li data-target="#demo" data-slide-to="2"></li>
+                    </ul>
+                    <div class="carousel-inner">
+                      <div class="carousel-item active">
+                        <img
+                          src="la.jpg"
+                          alt="Los Angeles"
+                          width="1100"
+                          height="500"
+                        />
+                        <div class="carousel-caption">
+                          <h3>Los Angeles</h3>
+                          <p>We had such a great time in LA!</p>
+                        </div>
+                      </div>
+                      <div class="carousel-item">
+                        <img
+                          src="chicago.jpg"
+                          alt="Chicago"
+                          width="1100"
+                          height="500"
+                        />
+                        <div class="carousel-caption">
+                          <h3>Chicago</h3>
+                          <p>Thank you, Chicago!</p>
+                        </div>
+                      </div>
+                      <div class="carousel-item">
+                        <img
+                          src="ny.jpg"
+                          alt="New York"
+                          width="1100"
+                          height="500"
+                        />
+                        <div class="carousel-caption">
+                          <h3>New York</h3>
+                          <p>We love the Big Apple!</p>
+                        </div>
+                      </div>
+                    </div>
+                    <a
+                      class="carousel-control-prev"
+                      href="#demo"
+                      data-slide="prev"
+                    >
+                      <span class="carousel-control-prev-icon"></span>
+                    </a>
+                    <a
+                      class="carousel-control-next"
+                      href="#demo"
+                      data-slide="next"
+                    >
+                      <span class="carousel-control-next-icon"></span>
+                    </a>
+                  </div>
+                </div>
                 <div class="modal-footer">
                   <button
                     type="button"
