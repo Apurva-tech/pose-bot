@@ -38,14 +38,14 @@
             // Convenience function to setup a webcam
             const size = 200;
             const flip = true; // whether to flip the webcam
-            webcam = new tmPose.Webcam(600, 400, flip); // width, height, flip
+            webcam = new tmPose.Webcam(800, 600, flip); // width, height, flip
             await webcam.setup(); // request access to the webcam
             await webcam.play();
             window.requestAnimationFrame(loop);
     
             // append/get elements to the DOM
             const canvas = document.getElementById("canvas");
-            canvas.width = 600; canvas.height = 400;
+            canvas.width = 800; canvas.height = 600;
             ctx = canvas.getContext("2d");
             labelContainer = document.getElementById("label-container");
             for (let i = 0; i < maxPredictions; i++) { // and class labels
@@ -107,7 +107,7 @@
             // If it's okay let's create a notification
             var title = "Posture";
             icon = 'https://homepages.cae.wisc.edu/~ece533/images/airplane.png';
-            var body = "Your posture seems incorrect. Please sit in correctly and click this notification";
+            var body = message +". Please sit in correctly and click this notification";
             var notification = new Notification(title, { body, icon });
             
 
@@ -133,7 +133,7 @@
         }
         function checkPosture(posturegroup){
           //group
-          // console.log(group)
+          console.log(group)
           goodposture = (posturegroup.reduce((sum, data) =>{
             return sum + data[0].probability
           },0)/100).toFixed(3)
@@ -143,19 +143,28 @@
           nearscreen = (posturegroup.reduce((sum, data) =>{
             return sum + data[2].probability
           },0)/100).toFixed(3)
-          mobile = (posturegroup.reduce((sum, data) =>{
-            return sum + data[3].probability
-          },0)/100).toFixed(3)
+
           // console.log('good: ',goodposture,' bad: ', badposture)
           // document.getElementById('good').innerHTML = 'Good: ' + goodposture
           // document.getElementById('bad').innerHTML = 'Bad: ' + badposture
 
-          if(badposture >= 0.98){
+          console.log({goodposture, badposture,nearscreen})
+
+          if(badposture >= 0.90){
             // console.log('bad posture')
             toggle= false;
             group = []
-            notifyMe("straighten the fuck up")
+            notifyMe("Correct your posture")
           }
+
+          if(nearscreen >= 0.90){
+            // console.log('bad posture')
+            toggle= false;
+            group = []
+            notifyMe("get away from screen")
+          }
+
+
         }
     
         function drawPose(pose) {
@@ -207,7 +216,7 @@
 
     <!-- Main screen -->
     <div id="screen">
-      <div><canvas id="canvas" style="border: 1px solid black;""></canvas></div>
+      <div><canvas id="canvas" style="border: 1px solid black;"></canvas></div>
       <div>
         <!-- <h1 id="result"><span id="good" class="text-success"></span> | <span id="bad" class="text-danger"></span></h1> -->
       </div>
