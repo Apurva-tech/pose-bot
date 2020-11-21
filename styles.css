@@ -1,0 +1,82 @@
+html {
+  scroll-behavior: smooth;
+}
+
+* {
+  padding: 0;
+  box-sizing: border-box;
+  margin: 0;
+}
+
+body {
+  min-height: 100vh;
+  background-color: #232128;
+  color: whitesmoke;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.on-load {
+  height: 100vh;
+}
+
+header {
+  padding: 0;
+  height: 160px;
+  display: flex;
+  justify-content: stretch;
+  align-items: flex-start;
+}
+
+header div {
+  padding: 0;
+  margin: 0 1rem;
+}
+
+header div img {
+  display: block;
+  height: 100%;
+  max-height: 160px;
+  width: auto;
+}
+
+main {
+  height: calc(100vh - 2em - 160px);
+  display: grid;
+  grid-template-rows: 1fr 4fr 1fr;
+  grid-template-columns: 1fr;
+  margin: 2em 0 0 0;
+  gap: 1em;
+}
+
+main #slogan h1 {
+  text-align: center;
+}
+
+main .masthead {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  /* grid-template-columns: repeat(auto-fill, minmax(300px, 2fr)); */
+}
+
+main .masthead > div {
+  min-width: 500px;
+  width: 45vw;
+}
+
+main .masthead #about {
+  margin: 0 0 0 5vw;
+}
+main .masthead #about h1 {
+  font-size: 48px;
+  margin-bottom: 12px;
+}
+
+main .masthead #about h4 {
+  font-size: 24px;
+  margin-bottom: 12px;
+}
+
+#screen {
+  height: 100vh;
+}
