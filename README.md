@@ -1,1 +1,3 @@
-# Unslouch
+# Posture
+
+Pose detection and correction.
