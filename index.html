@@ -14,8 +14,12 @@
         // the link to your model provided by Teachable Machine export panel
         const URL = "./TestFolder/TestTeachableModel/my_model/";
         let model, webcam, ctx, labelContainer, maxPredictions;
-    
+
+        let group = []
+        let toggle = false;
+
         async function init() {
+          toggle = true
             const modelURL = URL + "model.json";
             const metadataURL = URL + "metadata.json";
     
@@ -34,14 +38,14 @@
             // Convenience function to setup a webcam
             const size = 200;
             const flip = true; // whether to flip the webcam
-            webcam = new tmPose.Webcam(size, size, flip); // width, height, flip
+            webcam = new tmPose.Webcam(600, 400, flip); // width, height, flip
             await webcam.setup(); // request access to the webcam
             await webcam.play();
             window.requestAnimationFrame(loop);
     
             // append/get elements to the DOM
             const canvas = document.getElementById("canvas");
-            canvas.width = size; canvas.height = size;
+            canvas.width = 600; canvas.height = 400;
             ctx = canvas.getContext("2d");
             labelContainer = document.getElementById("label-container");
             for (let i = 0; i < maxPredictions; i++) { // and class labels
@@ -50,9 +54,14 @@
         }
     
         async function loop(timestamp) {
+            console.log(timestamp)
             webcam.update(); // update the webcam frame
+            
             await predict();
+            if(toggle){
+
             window.requestAnimationFrame(loop);
+            }
         }
     
         async function predict() {
@@ -61,15 +70,92 @@
             const { pose, posenetOutput } = await model.estimatePose(webcam.canvas);
             // Prediction 2: run input through teachable machine classification model
             const prediction = await model.predict(posenetOutput);
-    
+            // console.log(group)
+            if(group.length <100){
+              group.push(prediction)
+            } else{
+              group.shift()
+              group.push(prediction)
+            }
+            checkPosture(group)
+            // console.log(group)
             for (let i = 0; i < maxPredictions; i++) {
                 const classPrediction =
                     prediction[i].className + ": " + prediction[i].probability.toFixed(2);
-                labelContainer.childNodes[i].innerHTML = classPrediction;
+                // labelContainer.childNodes[i].innerHTML = classPrediction;
             }
-    
+            
             // finally draw the poses
             drawPose(pose);
+        }
+        function notifyMe(message) {
+          // Let's check if the browser supports notifications
+          const startover = function () {
+                  // console.log('NOTIFICATION CLICKed')
+                  toggle = true;
+                  // console.log(toggle)
+                  window.requestAnimationFrame(loop);
+                  group = []
+                  
+                };
+          if (!("Notification" in window)) {
+            alert("This browser does not support desktop notification");
+          }
+
+          // Let's check whether notification permissions have already been granted
+          else if (Notification.permission === "granted") {
+            // If it's okay let's create a notification
+            var title = "Posture";
+            icon = 'https://homepages.cae.wisc.edu/~ece533/images/airplane.png';
+            var body = "Your posture seems incorrect. Please sit in correctly and click this notification";
+            var notification = new Notification(title, { body, icon });
+            
+
+            
+          }
+
+          // Otherwise, we need to ask the user for permission
+          else if (Notification.permission !== "denied") {
+            Notification.requestPermission().then(function (permission) {
+              // If the user accepts, let's create a notification
+              if (permission === "granted") {
+                var notification = new Notification(title, { body, icon });
+                
+              }
+            });
+          }
+
+          notification.onclick = startover;
+            notification.onclose = startover;
+
+          // At last, if the user has denied notifications, and you 
+          // want to be respectful there is no need to bother them any more.
+        }
+        function checkPosture(posturegroup){
+          //group
+          // console.log(group)
+          goodposture = (posturegroup.reduce((sum, data) =>{
+            return sum + data[0].probability
+          },0)/100).toFixed(3)
+          badposture = (posturegroup.reduce((sum, data) =>{
+            return sum + data[1].probability
+          },0)/100).toFixed(3)
+          nearscreen = (posturegroup.reduce((sum, data) =>{
+            return sum + data[2].probability
+          },0)/100).toFixed(3)
+          mobile = (posturegroup.reduce((sum, data) =>{
+            return sum + data[3].probability
+          },0)/100).toFixed(3)
+          // console.log('good: ',goodposture,' bad: ', badposture)
+          // document.getElementById('good').innerHTML = 'Good: ' + goodposture
+          // document.getElementById('bad').innerHTML = 'Bad: ' + badposture
+
+          if(badposture >= 0.98){
+            // console.log('bad posture')
+            toggle= false;
+            group = []
+            notifyMe("straighten the fuck up")
+          }
         }
     
         function drawPose(pose) {
@@ -85,27 +171,34 @@
         }
     </script>
   </head>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+  <style>
+    *{
+      /* border: 1px dotted green; */
+    }
+  </style>
   <body>
     <div class="landing">
       <!-- Header with logo position: sticky/fixed -->
       <div class="on-land">
-        <header>
-          <div><img src="assets/img/logo.jpg" alt="Logo" class="logo" /></div>
+        <header class="text-center">
+          <!-- <div class="logo-div"><img src="assets/img/logo.jpg" alt="Logo" class="logo" /></div> -->
         </header>
 
         <!-- Start here: height: vh100 -->
         <main>
           <div id="slogan">
-            <h1>Have the online classes affected you as well?</h1>
+            <!-- <h1>Have the online classes affected you as well?</h1> -->
           </div>
           <div class="masthead">
             <div id="about">
-              <h1>About</h1>
-              <h4>Have the online classes affected you too?</h4>
-              <a href="#screen"><button onclick="init()">Start</button></a>
+              <!-- <h1>About</h1>
+              <h4>Have the online classes affected you too?</h4> -->
+              <button class="btn btn-primary text-light px-5" style="border-radius: 9999px;" onclick="init()">Start</button>
             </div>
             <div>
-              <img src="#" alt="Working from home" class="img-right" />
             </div>
           </div>
         </main>
@@ -114,8 +207,11 @@
 
     <!-- Main screen -->
     <div id="screen">
-      <div><canvas id="canvas"></canvas></div>
-      <div id="label-container"></div>
+      <div><canvas id="canvas" style="border: 1px solid black;""></canvas></div>
+      <div>
+        <!-- <h1 id="result"><span id="good" class="text-success"></span> | <span id="bad" class="text-danger"></span></h1> -->
+      </div>
+            
       <!-- Canvas with video  -->
       <!-- Posture Output  -->
   </body>

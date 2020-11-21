@@ -16,7 +16,7 @@ body {
 }
 
 .on-load {
-  height: 100vh;
+  height: 50vh;
 }
 
 header {
@@ -40,7 +40,7 @@ header div img {
 }
 
 main {
-  height: calc(100vh - 2em - 160px);
+  height: calc(50vh - 2em - 160px);
   display: grid;
   grid-template-rows: 1fr 4fr 1fr;
   grid-template-columns: 1fr;
@@ -78,5 +78,16 @@ main .masthead #about h4 {
 }
 
 #screen {
-  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.logo-div {
+  display: flex;
+  justify-content: center;
+}
+.pill {
+  border-radius: 9999px;
 }
