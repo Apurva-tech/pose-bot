@@ -1,4 +1,4 @@
-# Fem-Bot <img src="###" width="80" height = "70" >
+# Pose-Bot <img src="###" width="80" height = "70" >
 
 ### Inspiration ⚡
 
@@ -16,11 +16,10 @@ In this era of Work From Home, when we are attending meeting continuously and st
 ### How We built it 💡
 
 1. We used the Teachable Machine's Tensorflow.js API to train our model to classify user's pose, proximity to screen and if the user is holding a phone.
-2. For training our model we collected tagged twitter data and pre-processed it. The tweets were labelled as either 'positive' or 'negative.'
-3. We used spaCy for text classification, which is an open-source python NLP library. Thus, training data was prepared and the model was trained for 10 epochs. The model is tested on the test dataset and it is observed to have a decent accuracy.
-4. This model is then used to classify the extracted tweets and also tag appropriate authorities as per the sentiment to bring crimes to their notice for immediate help.
-5. The auto retweet and reply features have been implemented using the twitter API and the Python tweepy library.
-6. The website UI/UX was designed using Figma and then developed using HTML, CSS and jQuery. Simplemaps were used to visualize maps with the relevant data and the twitter feed was embedded from publish.twitter.com.
+2. For training our model we used our own image as the train data and tested it in different settings.
+3. This model is then used to classify the users video feed to assess their pose and detect if they are slouching or if they are too close too screen or are sitting in a generally a bad pose.
+4. If the user sits in a bad posture for a few seconds then the bot sends a notificaiton to the user to correct their posture or move away from the screen.
+5. The website UI/UX was designed using Figma and then developed using HTML, CSS and JavaScript.Tensorflow.js was used to detect pose and JavaScript API to send notifications.
 
 ### Challenges we ran into 🧠
 
@@ -35,7 +34,7 @@ We created a completely functional posture bot, which can make a small differenc
 
 We learned how to how to ... To be Completed.
 
-### What's next for Fem-Bot 📈
+### What's next for Pose-Bot 📈
 
 #### ➡ Tag authorities based on the geographic location
 
@@ -52,46 +51,34 @@ Fembot mainly focuses on gender related crimes and more prominently those agains
 ### Help File 💻
 
 - [x] Clone the repository to your local directory
-- `git clone https://github.com/Apurva-tech/Fem-Bot.git`
+- `git clone https://github.com/cryptus-neoxys/posture.git`
 
-- [x] Create a twitter developer account and generate API keys and Access keys
-- Add your keys to the script bot.py
+- [x] `npm i -g live-server`
+- Install live server to run it locally
 
-```python
-CONSUMER_KEY = ''
-CONSUMER_SECRET = ''
-ACCESS_KEY = ''
-ACCESS_SECRET = ''
-```
+- [x] `live-server .`
+- Go to project directory and launch the website using live-server
 
-- [x] Now create a virtualenv for your local directory
-- `pip install virtualenv`
-- `virtualenv env`
-- `env\Scripts\activate`
-- `python bot.py`
+- [x] Voilla the site is up and running on your PC.
 
-- [x] Ctrl + C to stop the infinite loop, check your bot account to see the bot in Action!!
+- [x] Ctrl + C to stop the live-server!!
 
 ### Built With ⚙
 
-- [x] Python
-- ✔ Virtualenv
-- ✔ Tweepy
-- ✔ SpaCy
-- [x] Twitter API
-- [x] HTML/CSS
+- [x] HTML
+- [x] CSS
 - [x] Javascript
-- [x] Simplemaps
+  - Tensorflow.js
 - [x] Deployed on Vercel
 
 ### Try it out 👇🏽
 
-- 🤖 [The Fem-Bot](https://twitter.com/_FemBot_)
-- 🕸 [The Website](https://fem-bot.vercel.app/#home)
-- 🖥 [The Figma Prototype](https://www.figma.com/file/85YouCfOSe4H6J40V2ccaS/TwitterBOT?node-id=0%3A1)
+- 🤖 [The Pose-Bot](## URL ##)
+- 🕸 [The Website](https://Pose-Bot.vercel.app/#home)
+- 🖥 [The Figma Prototype](https://www.figma.com/file/utEHzshb9zHSB0v3Kp7Rby/Untitled?node-id=0%3A1)
 
 ### 3️⃣ Cheers to the team 🥂
 
-- [Gurnehmat Kaur Dhindsa](https://github.com/gkdhindsa)
-- [Vishaka Mohan](https://github.com/vishaka-mohan)
 - [Apurva Sharma](https://github.com/Apurva-tech)
+- [Aniket Singh Rawat](https://github.com/dikwickley)
+- [Dev Sharma](https://github.com/cryptus-neoxys)
