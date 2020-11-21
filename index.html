@@ -8,183 +8,189 @@
     <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@1.3.1/dist/tf.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@teachablemachine/pose@0.8/dist/teachablemachine-pose.min.js"></script>
     <script type="text/javascript">
-        // More API functions here:
-        // https://github.com/googlecreativelab/teachablemachine-community/tree/master/libraries/pose
-    
-        // the link to your model provided by Teachable Machine export panel
-        const URL = "./TestFolder/TestTeachableModel/my_model/";
-        let model, webcam, ctx, labelContainer, maxPredictions;
+      // More API functions here:
+      // https://github.com/googlecreativelab/teachablemachine-community/tree/master/libraries/pose
 
-        let group = []
-        let toggle = false;
+      // the link to your model provided by Teachable Machine export panel
+      const URL = "./TestFolder/TestTeachableModel/my_model/";
+      let model, webcam, ctx, labelContainer, maxPredictions;
 
-        async function init() {
-          toggle = true
-            const modelURL = URL + "model.json";
-            const metadataURL = URL + "metadata.json";
-    
-            // load the model and metadata
-            // Refer to tmImage.loadFromFiles() in the API to support files from a file picker
-            // Note: the pose library adds a tmPose object to your window (window.tmPose)
-            
-            model = await tmPose.load(modelURL, metadataURL);
-            // you need to create File objects, like with file input elements (<input type="file" ...>)
-            // const uploadModel = document.getElementById('upload-model');
-            // const uploadWeights = document.getElementById('upload-weights');
-            // const uploadMetadata = document.getElementById('upload-metadata');
-            // model = await tmPose.loadFromFiles(uploadModel.files[0], uploadWeights.files[0], uploadMetadata.files[0])
-            maxPredictions = model.getTotalClasses();
-    
-            // Convenience function to setup a webcam
-            const size = 200;
-            const flip = true; // whether to flip the webcam
-            webcam = new tmPose.Webcam(800, 600, flip); // width, height, flip
-            await webcam.setup(); // request access to the webcam
-            await webcam.play();
-            window.requestAnimationFrame(loop);
-    
-            // append/get elements to the DOM
-            const canvas = document.getElementById("canvas");
-            canvas.width = 800; canvas.height = 600;
-            ctx = canvas.getContext("2d");
-            labelContainer = document.getElementById("label-container");
-            for (let i = 0; i < maxPredictions; i++) { // and class labels
-                labelContainer.appendChild(document.createElement("div"));
+      let group = [];
+      let toggle = false;
+
+      async function init() {
+        toggle = true;
+        const modelURL = URL + "model.json";
+        const metadataURL = URL + "metadata.json";
+
+        // load the model and metadata
+        // Refer to tmImage.loadFromFiles() in the API to support files from a file picker
+        // Note: the pose library adds a tmPose object to your window (window.tmPose)
+
+        model = await tmPose.load(modelURL, metadataURL);
+        // you need to create File objects, like with file input elements (<input type="file" ...>)
+        // const uploadModel = document.getElementById('upload-model');
+        // const uploadWeights = document.getElementById('upload-weights');
+        // const uploadMetadata = document.getElementById('upload-metadata');
+        // model = await tmPose.loadFromFiles(uploadModel.files[0], uploadWeights.files[0], uploadMetadata.files[0])
+        maxPredictions = model.getTotalClasses();
+
+        // Convenience function to setup a webcam
+        const size = 200;
+        const flip = true; // whether to flip the webcam
+        webcam = new tmPose.Webcam(800, 600, flip); // width, height, flip
+        await webcam.setup(); // request access to the webcam
+        await webcam.play();
+        window.requestAnimationFrame(loop);
+
+        // append/get elements to the DOM
+        const canvas = document.getElementById("canvas");
+        canvas.width = 800;
+        canvas.height = 600;
+        ctx = canvas.getContext("2d");
+        labelContainer = document.getElementById("label-container");
+        for (let i = 0; i < maxPredictions; i++) {
+          // and class labels
+          labelContainer.appendChild(document.createElement("div"));
+        }
+      }
+
+      async function loop(timestamp) {
+        console.log(timestamp);
+        webcam.update(); // update the webcam frame
+
+        await predict();
+        if (toggle) {
+          window.requestAnimationFrame(loop);
+        }
+      }
+
+      async function predict() {
+        // Prediction #1: run input through posenet
+        // estimatePose can take in an image, video or canvas html element
+        const { pose, posenetOutput } = await model.estimatePose(webcam.canvas);
+        // Prediction 2: run input through teachable machine classification model
+        const prediction = await model.predict(posenetOutput);
+        // console.log(group)
+        if (group.length < 100) {
+          group.push(prediction);
+        } else {
+          group.shift();
+          group.push(prediction);
+        }
+        checkPosture(group);
+        // console.log(group)
+        for (let i = 0; i < maxPredictions; i++) {
+          const classPrediction =
+            prediction[i].className +
+            ": " +
+            prediction[i].probability.toFixed(2);
+          // labelContainer.childNodes[i].innerHTML = classPrediction;
+        }
+
+        // finally draw the poses
+        drawPose(pose);
+      }
+      function notifyMe(message) {
+        // Let's check if the browser supports notifications
+        const startover = function () {
+          // console.log('NOTIFICATION CLICKed')
+          toggle = true;
+          // console.log(toggle)
+          window.requestAnimationFrame(loop);
+          group = [];
+        };
+        if (!("Notification" in window)) {
+          alert("This browser does not support desktop notification");
+        }
+
+        // Let's check whether notification permissions have already been granted
+        else if (Notification.permission === "granted") {
+          // If it's okay let's create a notification
+          var title = "Posture";
+          icon = "https://homepages.cae.wisc.edu/~ece533/images/airplane.png";
+          var body =
+            message + ". Please sit in correctly and click this notification";
+          var notification = new Notification(title, { body, icon });
+        }
+
+        // Otherwise, we need to ask the user for permission
+        else if (Notification.permission !== "denied") {
+          Notification.requestPermission().then(function (permission) {
+            // If the user accepts, let's create a notification
+            if (permission === "granted") {
+              var notification = new Notification(title, { body, icon });
             }
+          });
         }
-    
-        async function loop(timestamp) {
-            console.log(timestamp)
-            webcam.update(); // update the webcam frame
-            
-            await predict();
-            if(toggle){
 
-            window.requestAnimationFrame(loop);
-            }
+        notification.onclick = startover;
+        notification.onclose = startover;
+
+        // At last, if the user has denied notifications, and you
+        // want to be respectful there is no need to bother them any more.
+      }
+      function checkPosture(posturegroup) {
+        //group
+        console.log(group);
+        goodposture = (
+          posturegroup.reduce((sum, data) => {
+            return sum + data[0].probability;
+          }, 0) / 100
+        ).toFixed(3);
+        badposture = (
+          posturegroup.reduce((sum, data) => {
+            return sum + data[1].probability;
+          }, 0) / 100
+        ).toFixed(3);
+        nearscreen = (
+          posturegroup.reduce((sum, data) => {
+            return sum + data[2].probability;
+          }, 0) / 100
+        ).toFixed(3);
+
+        // console.log('good: ',goodposture,' bad: ', badposture)
+        // document.getElementById('good').innerHTML = 'Good: ' + goodposture
+        // document.getElementById('bad').innerHTML = 'Bad: ' + badposture
+
+        console.log({ goodposture, badposture, nearscreen });
+
+        if (badposture >= 0.9) {
+          // console.log('bad posture')
+          toggle = false;
+          group = [];
+          notifyMe("Correct your posture");
         }
-    
-        async function predict() {
-            // Prediction #1: run input through posenet
-            // estimatePose can take in an image, video or canvas html element
-            const { pose, posenetOutput } = await model.estimatePose(webcam.canvas);
-            // Prediction 2: run input through teachable machine classification model
-            const prediction = await model.predict(posenetOutput);
-            // console.log(group)
-            if(group.length <100){
-              group.push(prediction)
-            } else{
-              group.shift()
-              group.push(prediction)
-            }
-            checkPosture(group)
-            // console.log(group)
-            for (let i = 0; i < maxPredictions; i++) {
-                const classPrediction =
-                    prediction[i].className + ": " + prediction[i].probability.toFixed(2);
-                // labelContainer.childNodes[i].innerHTML = classPrediction;
-            }
-            
-            // finally draw the poses
-            drawPose(pose);
+
+        if (nearscreen >= 0.9) {
+          // console.log('bad posture')
+          toggle = false;
+          group = [];
+          notifyMe("get away from screen");
         }
-        function notifyMe(message) {
-          // Let's check if the browser supports notifications
-          const startover = function () {
-                  // console.log('NOTIFICATION CLICKed')
-                  toggle = true;
-                  // console.log(toggle)
-                  window.requestAnimationFrame(loop);
-                  group = []
-                  
-                };
-          if (!("Notification" in window)) {
-            alert("This browser does not support desktop notification");
+      }
+
+      function drawPose(pose) {
+        if (webcam.canvas) {
+          ctx.drawImage(webcam.canvas, 0, 0);
+          // draw the keypoints and skeleton
+          if (pose) {
+            const minPartConfidence = 0.5;
+            tmPose.drawKeypoints(pose.keypoints, minPartConfidence, ctx);
+            tmPose.drawSkeleton(pose.keypoints, minPartConfidence, ctx);
           }
-
-          // Let's check whether notification permissions have already been granted
-          else if (Notification.permission === "granted") {
-            // If it's okay let's create a notification
-            var title = "Posture";
-            icon = 'https://homepages.cae.wisc.edu/~ece533/images/airplane.png';
-            var body = message +". Please sit in correctly and click this notification";
-            var notification = new Notification(title, { body, icon });
-            
-
-            
-          }
-
-          // Otherwise, we need to ask the user for permission
-          else if (Notification.permission !== "denied") {
-            Notification.requestPermission().then(function (permission) {
-              // If the user accepts, let's create a notification
-              if (permission === "granted") {
-                var notification = new Notification(title, { body, icon });
-                
-              }
-            });
-          }
-
-          notification.onclick = startover;
-            notification.onclose = startover;
-
-          // At last, if the user has denied notifications, and you 
-          // want to be respectful there is no need to bother them any more.
         }
-        function checkPosture(posturegroup){
-          //group
-          console.log(group)
-          goodposture = (posturegroup.reduce((sum, data) =>{
-            return sum + data[0].probability
-          },0)/100).toFixed(3)
-          badposture = (posturegroup.reduce((sum, data) =>{
-            return sum + data[1].probability
-          },0)/100).toFixed(3)
-          nearscreen = (posturegroup.reduce((sum, data) =>{
-            return sum + data[2].probability
-          },0)/100).toFixed(3)
-
-          // console.log('good: ',goodposture,' bad: ', badposture)
-          // document.getElementById('good').innerHTML = 'Good: ' + goodposture
-          // document.getElementById('bad').innerHTML = 'Bad: ' + badposture
-
-          console.log({goodposture, badposture,nearscreen})
-
-          if(badposture >= 0.90){
-            // console.log('bad posture')
-            toggle= false;
-            group = []
-            notifyMe("Correct your posture")
-          }
-
-          if(nearscreen >= 0.90){
-            // console.log('bad posture')
-            toggle= false;
-            group = []
-            notifyMe("get away from screen")
-          }
-
-
-        }
-    
-        function drawPose(pose) {
-            if (webcam.canvas) {
-                ctx.drawImage(webcam.canvas, 0, 0);
-                // draw the keypoints and skeleton
-                if (pose) {
-                    const minPartConfidence = 0.5;
-                    tmPose.drawKeypoints(pose.keypoints, minPartConfidence, ctx);
-                    tmPose.drawSkeleton(pose.keypoints, minPartConfidence, ctx);
-                }
-            }
-        }
+      }
     </script>
   </head>
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <link
+    rel="stylesheet"
+    href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+  />
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
   <style>
-    *{
+    * {
       /* border: 1px dotted green; */
     }
   </style>
@@ -205,10 +211,15 @@
             <div id="about">
               <!-- <h1>About</h1>
               <h4>Have the online classes affected you too?</h4> -->
-              <button class="btn btn-primary text-light px-5" style="border-radius: 9999px;" onclick="init()">Start</button>
+              <button
+                class="btn btn-primary text-light px-5"
+                style="border-radius: 9999px"
+                onclick="init()"
+              >
+                Start
+              </button>
             </div>
-            <div>
-            </div>
+            <div></div>
           </div>
         </main>
       </div>
@@ -216,12 +227,13 @@
 
     <!-- Main screen -->
     <div id="screen">
-      <div><canvas id="canvas" style="border: 1px solid black;"></canvas></div>
-      <div>
-        <!-- <h1 id="result"><span id="good" class="text-success"></span> | <span id="bad" class="text-danger"></span></h1> -->
-      </div>
-            
-      <!-- Canvas with video  -->
-      <!-- Posture Output  -->
+      <div><canvas id="canvas" style="border: 1px solid black"></canvas></div>
+    </div>
+    <div>
+      <!-- <h1 id="result"><span id="good" class="text-success"></span> | <span id="bad" class="text-danger"></span></h1> -->
+    </div>
+
+    <!-- Canvas with video  -->
+    <!-- Posture Output  -->
   </body>
 </html>
