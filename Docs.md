@@ -73,7 +73,7 @@ Fembot mainly focuses on gender related crimes and more prominently those agains
 
 ### Try it out 👇🏽
 
-- 🤖 [The Pose-Bot](## URL ##)
+- 🤖 [Tensorflow.js Model](https://teachablemachine.withgoogle.com/models/f4JB966HD/)
 - 🕸 [The Website](https://Pose-Bot.vercel.app/#home)
 - 🖥 [The Figma Prototype](https://www.figma.com/file/utEHzshb9zHSB0v3Kp7Rby/Untitled?node-id=0%3A1)
 

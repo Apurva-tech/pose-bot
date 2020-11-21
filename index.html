@@ -4,7 +4,28 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
-    <link rel="stylesheet" href="styles.css" />
+    <!-- <link rel="stylesheet" href="styles.css" /> -->
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css"
+      integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2"
+      crossorigin="anonymous"
+    />
+    <script
+      src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+      integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"
+      integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.min.js"
+      integrity="sha384-w1Q4orYjBQndcko6MimVbzY0tgp4pWB4lZ7lr30WKz0vr/aWKhXdBNmNb5D92v7s"
+      crossorigin="anonymous"
+    ></script>
     <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@1.3.1/dist/tf.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@teachablemachine/pose@0.8/dist/teachablemachine-pose.min.js"></script>
     <script type="text/javascript">
@@ -36,17 +57,22 @@
         maxPredictions = model.getTotalClasses();
 
         // Convenience function to setup a webcam
-        const size = 200;
+        let mql = window.matchMedia("(max-width: 570px)");
+        const size = !mql ? window.innerWidth * 0.6 : window.innerHeight * 0.48;
         const flip = true; // whether to flip the webcam
-        webcam = new tmPose.Webcam(800, 600, flip); // width, height, flip
+        webcam = new tmPose.Webcam(size, size, flip); // width, height, flip
         await webcam.setup(); // request access to the webcam
         await webcam.play();
         window.requestAnimationFrame(loop);
 
         // append/get elements to the DOM
         const canvas = document.getElementById("canvas");
-        canvas.width = 800;
-        canvas.height = 600;
+        canvas.width = !mql
+          ? window.innerWidth * 0.5
+          : window.innerHeight * 0.45;
+        canvas.height = !mql
+          ? window.innerWidth * 0.5
+          : window.innerHeight * 0.45;
         ctx = canvas.getContext("2d");
         labelContainer = document.getElementById("label-container");
         for (let i = 0; i < maxPredictions; i++) {
@@ -183,57 +209,93 @@
       }
     </script>
   </head>
-  <link
-    rel="stylesheet"
-    href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
-  />
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
   <style>
     * {
       /* border: 1px dotted green; */
     }
   </style>
-  <body>
-    <div class="landing">
+  <body class="" style="background-color: #232128">
+    <div class="landing text-light">
       <!-- Header with logo position: sticky/fixed -->
-      <div class="on-land">
-        <header class="text-center">
-          <!-- <div class="logo-div"><img src="assets/img/logo.jpg" alt="Logo" class="logo" /></div> -->
-        </header>
+      <header class="text-center">
+        <div class="logo-div">
+          <img src="assets/img/logo.jpg" alt="Logo" class="img img-fluid" />
+        </div>
+      </header>
 
-        <!-- Start here: height: vh100 -->
-        <main>
-          <div id="slogan">
-            <!-- <h1>Have the online classes affected you as well?</h1> -->
-          </div>
-          <div class="masthead">
-            <div id="about">
-              <!-- <h1>About</h1>
-              <h4>Have the online classes affected you too?</h4> -->
-              <button
-                class="btn btn-primary text-light px-5"
-                style="border-radius: 9999px"
-                onclick="init()"
-              >
-                Start
-              </button>
+      <!-- Main screen -->
+      <main>
+        <div class="text-center m-1">
+          <canvas id="canvas" style="border: 1px solid black"></canvas>
+        </div>
+      </main>
+      <div class="masthead container text-center">
+        <div class="m-4">
+          <button
+            class="font-weight-bold btn btn-primary text-light px-5"
+            style="border-radius: 9999px"
+            onclick="init()"
+          >
+            Monitor me.
+          </button>
+          <!-- Button trigger modal -->
+          <button
+            type="button"
+            class="btn btn-primary m-4 font-weight-bold"
+            data-toggle="modal"
+            data-target="#exampleModal"
+            style="border-radius: 999px"
+          >
+            Launch demo modal
+          </button>
+
+          <!-- Modal -->
+          <div
+            class="modal fade"
+            id="exampleModal"
+            tabindex="-1"
+            role="dialog"
+            aria-labelledby="exampleModalLabel"
+            aria-hidden="true"
+          >
+            <div
+              class="modal-dialog modal-dialog-centered modal-dialog-scrollable"
+              role="document"
+            >
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="exampleModalLabel">
+                    Modal title
+                  </h5>
+                  <button
+                    type="button"
+                    class="close"
+                    data-dismiss="modal"
+                    aria-label="Close"
+                  >
+                    <span aria-hidden="true">×</span>
+                  </button>
+                </div>
+                <div class="modal-body">...</div>
+                <div class="modal-footer">
+                  <button
+                    type="button"
+                    class="btn btn-secondary"
+                    data-dismiss="modal"
+                  >
+                    Close
+                  </button>
+                  <button type="button" class="btn btn-primary">
+                    Save changes
+                  </button>
+                </div>
+              </div>
             </div>
-            <div></div>
           </div>
-        </main>
+        </div>
       </div>
+      <!-- Canvas with video  -->
+      <!-- Posture Output  -->
     </div>
-
-    <!-- Main screen -->
-    <div id="screen">
-      <div><canvas id="canvas" style="border: 1px solid black"></canvas></div>
-    </div>
-    <div>
-      <!-- <h1 id="result"><span id="good" class="text-success"></span> | <span id="bad" class="text-danger"></span></h1> -->
-    </div>
-
-    <!-- Canvas with video  -->
-    <!-- Posture Output  -->
   </body>
 </html>
