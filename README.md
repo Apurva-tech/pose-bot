@@ -98,7 +98,7 @@ Include more functionality like screen time, and detecting if the user is holdin
 
 ### Video 🎥
 
-🎬 <a href="https://youtu.be/MpkDf_lkL58\"> Demo Video Link</a>
+🎬 <a href="https://youtu.be/gl4OBH5vRHk"> Demo Video Link</a>
 
 ### 3️⃣ Cheers to the team 🥂
 
