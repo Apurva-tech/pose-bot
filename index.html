@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" style="scroll-behavior: smooth">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
+    <title>Pose-Bot | Correct it!</title>
     <!-- <link rel="stylesheet" href="styles.css" /> -->
     <link
       rel="stylesheet"
@@ -134,7 +134,8 @@
         else if (Notification.permission === "granted") {
           // If it's okay let's create a notification
           var title = "Posture";
-          icon = "https://homepages.cae.wisc.edu/~ece533/images/airplane.png";
+          var icon =
+            "https://homepages.cae.wisc.edu/~ece533/images/airplane.png";
           var body =
             message + ". Please sit in correctly and click this notification";
           var tag = "pose-bot";
@@ -213,15 +214,41 @@
   <style>
     * {
       /* border: 1px dotted green; */
+      font-family: Verdana, Geneva, Tahoma, sans-serif;
     }
     main > img {
       height: 300px;
+    }
+    /* width */
+    ::-webkit-scrollbar {
+      width: 10px;
+    }
+
+    /* Track */
+    ::-webkit-scrollbar-track {
+      background: #f1f1f1;
+    }
+
+    /* Handle */
+    ::-webkit-scrollbar-thumb {
+      background: #3ba2c2;
+    }
+
+    /* Handle on hover */
+    ::-webkit-scrollbar-thumb:hover {
+      background: #286274;
+    }
+    .btn-primary {
+      background-color: #3b5fc2;
+    }
+    .btn-primary:hover {
+      background-color: #4569ce;
     }
   </style>
   <body class="" style="background-color: #232128">
     <div class="landing text-light">
       <!-- Header with logo position: sticky/fixed -->
-      <header class="text-center">
+      <header class="text-left">
         <div class="logo-div">
           <img src="./assets//img/logo.jpeg" alt="Logo" class="img img-fluid" />
         </div>
@@ -229,199 +256,203 @@
 
       <!-- Main screen -->
       <main>
-        <div class="text-center m-1">
-          <div id="demo" class="carousel slide my-3" data-ride="carousel">
-            <ul class="carousel-indicators">
-              <li data-target="#demo" data-slide-to="0" class="active"></li>
-              <li data-target="#demo" data-slide-to="1"></li>
-              <li data-target="#demo" data-slide-to="2"></li>
-            </ul>
-            <div class="carousel-inner">
-              <div class="carousel-item active">
-                <img
-                  src="https://media.istockphoto.com/photos/man-is-bent-over-tabletbad-sitting-posture-at-work-picture-id187491090?k=6&m=187491090&s=612x612&w=0&h=FzREE8-aVN4xTIHHtfNZ8ADE8uMQmPppMjGdJYm7bQs="
-                  alt="Los Angeles"
-                />
-                <div class="carousel-caption">
-                  <!-- <h3 class="text-dark">Back pain?</h3>
-                  <p class="text-dark">
-                    The reason could be bad sitting posture
-                  </p> -->
-                </div>
-              </div>
-              <div class="carousel-item">
-                <img
-                  src="https://buffer.com/resources/content/images/resources/wp-content/uploads/2013/11/Screen-Shot-2013-11-11-at-8.09.23-AM.png"
-                  alt="Chicago"
-                />
-                <div class="carousel-caption">
-                  <!-- <h3>Chicago</h3>
-                  <p>Thank you, Chicago!</p> -->
-                </div>
-              </div>
-              <div class="carousel-item">
-                <img
-                  src="https://scitechdaily.com/images/Human-Spinal-Cord.jpg"
-                  width="80%"
-                  alt="New York"
-                />
-                <div class="carousel-caption">
-                  <!-- <h3>New York</h3>
-                  <p>We love the Big Apple!</p> -->
-                </div>
-              </div>
-              <div class="carousel-item">
-                <img
-                  src="https://news.umich.edu/wp-content/uploads/2019/07/an-epipen-for-spinal-cord-injuries-1.jpg"
-                  alt="Chicago"
-                />
-                <div class="carousel-caption">
-                  <!-- <h3>Chicago</h3>
-                  <p>Thank you, Chicago!</p> -->
-                </div>
-              </div>
-            </div>
-            <a class="carousel-control-prev" href="#demo" data-slide="prev">
-              <span class="carousel-control-prev-icon"></span>
-            </a>
-            <a class="carousel-control-next" href="#demo" data-slide="next">
-              <span class="carousel-control-next-icon"></span>
-            </a>
-          </div>
-          <canvas id="canvas"></canvas>
-        </div>
-      </main>
-      <div class="masthead container text-center">
-        <div class="m-4">
-          <button
-            class="font-weight-bold btn btn-primary text-light px-5"
-            style="border-radius: 9999px"
-            onclick="init()"
-          >
-            Monitor me.
-          </button>
-          <!-- Button trigger modal -->
-          <button
-            type="button"
-            class="btn btn-primary m-4 font-weight-bold px-5"
-            data-toggle="modal"
-            data-target="#exampleModal"
-            style="border-radius: 999px"
-          >
-            Learn More.
-          </button>
-
-          <!-- Modal -->
-          <div
-            class="modal fade"
-            id="exampleModal"
-            tabindex="-1"
-            role="dialog"
-            aria-labelledby="exampleModalLabel"
-            aria-hidden="true"
-          >
+        <div class="text-center">
+          <div class="d-flex flex-direction-row">
             <div
-              class="modal-dialog modal-dialog-centered modal-dialog-scrollable"
-              role="document"
+              id="demo"
+              class="carousel d-flex align-items-center"
+              data-ride="carousel"
+              style="min-width: 700px; min-height: 600px"
             >
-              <div class="modal-content">
-                <div class="modal-header">
-                  <h5 class="modal-title" id="exampleModalLabel">
-                    Modal title
-                  </h5>
-                  <button
-                    type="button"
-                    class="close"
-                    data-dismiss="modal"
-                    aria-label="Close"
-                  >
-                    <span aria-hidden="true">×</span>
-                  </button>
-                </div>
-                <div class="modal-body">
-                  <div id="demo" class="carousel slide" data-ride="carousel">
-                    <ul class="carousel-indicators">
-                      <li
-                        data-target="#demo"
-                        data-slide-to="0"
-                        class="active"
-                      ></li>
-                      <li data-target="#demo" data-slide-to="1"></li>
-                      <li data-target="#demo" data-slide-to="2"></li>
-                    </ul>
-                    <div class="carousel-inner">
-                      <div class="carousel-item active">
-                        <img
-                          src="la.jpg"
-                          alt="Los Angeles"
-                          width="1100"
-                          height="500"
-                        />
-                        <div class="carousel-caption">
-                          <h3>Los Angeles</h3>
-                          <p>We had such a great time in LA!</p>
-                        </div>
-                      </div>
-                      <div class="carousel-item">
-                        <img
-                          src="chicago.jpg"
-                          alt="Chicago"
-                          width="1100"
-                          height="500"
-                        />
-                        <div class="carousel-caption">
-                          <h3>Chicago</h3>
-                          <p>Thank you, Chicago!</p>
-                        </div>
-                      </div>
-                      <div class="carousel-item">
-                        <img
-                          src="ny.jpg"
-                          alt="New York"
-                          width="1100"
-                          height="500"
-                        />
-                        <div class="carousel-caption">
-                          <h3>New York</h3>
-                          <p>We love the Big Apple!</p>
-                        </div>
-                      </div>
-                    </div>
-                    <a
-                      class="carousel-control-prev"
-                      href="#demo"
-                      data-slide="prev"
-                    >
-                      <span class="carousel-control-prev-icon"></span>
-                    </a>
-                    <a
-                      class="carousel-control-next"
-                      href="#demo"
-                      data-slide="next"
-                    >
-                      <span class="carousel-control-next-icon"></span>
-                    </a>
+              <ul class="carousel-indicators">
+                <li data-target="#demo" data-slide-to="0" class="active"></li>
+                <li data-target="#demo" data-slide-to="1"></li>
+                <li data-target="#demo" data-slide-to="2"></li>
+              </ul>
+              <div class="carousel-inner">
+                <div class="carousel-item active">
+                  <img src="./assets/img/1.png" alt="Los Angeles" />
+                  <div class="carousel-caption">
+                    <!-- <h3 class="text-dark">Back pain?</h3>
+                    <p class="text-dark">
+                      The reason could be bad sitting posture
+                    </p> -->
                   </div>
                 </div>
-                <div class="modal-footer">
-                  <button
-                    type="button"
-                    class="btn btn-secondary"
-                    data-dismiss="modal"
-                  >
-                    Close
-                  </button>
-                  <button type="button" class="btn btn-primary">
-                    Save changes
-                  </button>
+                <div class="carousel-item">
+                  <img
+                    width="600"
+                    style="margin: 100px 0"
+                    src="https://buffer.com/resources/content/images/resources/wp-content/uploads/2013/11/Screen-Shot-2013-11-11-at-8.09.23-AM.png"
+                    alt="Chicago"
+                  />
+                  <div class="carousel-caption">
+                    <!-- <h3>Chicago</h3>
+                    <p>Thank you, Chicago!</p> -->
+                  </div>
+                </div>
+                <div class="carousel-item">
+                  <img
+                    width="600"
+                    src="https://scitechdaily.com/images/Human-Spinal-Cord.jpg"
+                    width="80%"
+                    alt="New York"
+                  />
+                  <div class="carousel-caption">
+                    <!-- <h3>New York</h3>
+                    <p>We love the Big Apple!</p> -->
+                  </div>
+                </div>
+                <div class="carousel-item">
+                  <img
+                    src="https://images.squarespace-cdn.com/content/v1/5601a1b2e4b0eaa138babe0c/1460050490690-ZYDR6C3LGLX0T3P06ZMU/ke17ZwdGBToddI8pDm48kN_oxOEgSHwyifItmiijwgFZw-zPPgdn4jUwVcJE1ZvWEtT5uBSRWt4vQZAgTJucoTqqXjS3CfNDSuuf31e0tVFCGwsdcQRbmn_Ph9Y1L2ib5ngnVgMZdvrTksiDaHAyK6EcAfnVBrEqrgp1UxUHGkY/bad+posture.png?format=1500w"
+                    alt="Chicago"
+                  />
+                  <div class="carousel-caption">
+                    <!-- <h3>Chicago</h3>
+                    <p>Thank you, Chicago!</p> -->
+                  </div>
                 </div>
               </div>
+              <a class="carousel-control-prev" href="#demo" data-slide="prev">
+                <span class="carousel-control-prev-icon"></span>
+              </a>
+              <a class="carousel-control-next" href="#demo" data-slide="next">
+                <span class="carousel-control-next-icon"></span>
+              </a>
             </div>
+
+            <div
+              class="d-flex flex-column justify-content-center align-items-center p-5"
+            >
+              <p class="display-1">Our Vision</p>
+              <h4 style="margin-top: 2em">
+                We created this application to help users maintain a good
+                posture and save from early signs of postural imbalance and
+                protect your vision, this application uses a image classifier
+                from Google API. It notifies the user when he/she is sitting in
+                a bad position or is too close to the screen. We have also
+                included EchoAR models to educate the children about the harms
+                of sitting in a bad position and importance of healthy eyes 👀.
+              </h4>
+              <a href="#monitor">
+                <button
+                  class="btn btn-primary m-2 font-weight-bold px-5"
+                  style="border-radius: 9999px"
+                >
+                  Try it Out
+                </button>
+              </a>
+              <a href="#models">
+                <button
+                  type="button"
+                  class="btn btn-primary m-2 font-weight-bold px-5"
+                  style="border-radius: 999px"
+                >
+                  Explore 3D AR Models
+                </button>
+              </a>
+            </div>
+          </div>
+
+          <div
+            id="monitor"
+            class="text-center d-flex flex-column justify-content-center align-items-center"
+          >
+            <canvas
+              style="
+                height: 50vh;
+                width: 50vh;
+                background-color: #3ba2c2;
+                border-radius: 50px;
+                margin-top: 15em;
+              "
+              id="canvas"
+            ></canvas>
+            <div style="margin-bottom: 10em">
+              <button
+                class="font-weight-bold btn btn-primary px-5 text-light m-2"
+                style="border-radius: 9999px"
+                onclick="init()"
+              >
+                Monitor me.
+              </button>
+              <!-- Button trigger modal -->
+            </div>
+          </div>
+        </div>
+      </main>
+
+      <div id="models" class="d-flex flex-column p-5" style="margin: 10em 0">
+        <h1 class="text-center display-2">Models</h1>
+        <div>
+          <h2 class="text-center">EchoAR HOLOGRAM</h2>
+          <div
+            class="d-flex flex-row justify-content-center align-items-center"
+          >
+            <div
+              class="d-flex flex-column mx-5 m-3 text-center align-items-center justify-content-center"
+            >
+              <img height="300" src="./assets/img/skeleton.jpeg" alt="" />
+              <h4>skeleton</h4>
+            </div>
+            <div
+              class="d-flex flex-column mx-5 m-3 text-center align-items-center justify-content-center"
+            >
+              <img height="300" src="./assets/img/heart.jpeg" alt="" />
+              <h4>heart</h4>
+            </div>
+          </div>
+        </div>
+        <div class="d-flex flex-row">
+          <iframe
+            class="m-2"
+            width="100%"
+            height="480px"
+            src="https://poly.google.com/view/dBzk5erdQcg/embed?chrome=min"
+            frameborder="0"
+            style="border: none"
+            allowvr="yes"
+            allow="vr; xr; accelerometer; magnetometer; gyroscope; autoplay;"
+            allowfullscreen
+            mozallowfullscreen="true"
+            webkitallowfullscreen="true"
+            onmousewheel=""
+          ></iframe>
+        </div>
+      </div>
+
+      <div
+        class="d-flex flex-column p-5 justify-content-center align-items-center"
+        style="margin: 15em 0"
+      >
+        <h1 class="display-2">The Team</h1>
+        <div class="d-flex flex-row text-center">
+          <div>
+            <img
+              class="img thumbnail mx-4"
+              src="https://avatars1.githubusercontent.com/u/31622972?s=460&u=c2ea190651b4ecf38bdc2b9937a057e7b696bfba&v=4"
+            />
+            <h3 class="my-3">Aniket Singh Rawat</h3>
+          </div>
+          <div>
+            <img
+              class="img thumbnail mx-4"
+              src="https://avatars1.githubusercontent.com/u/59837325?s=460&u=95383e7cb90f583f51cf08fda740142021ba4e46&v=4"
+            />
+            <h3 class="my-3">Apurva Sharma</h3>
+          </div>
+          <div>
+            <img
+              class="img thumbnail mx-4"
+              src="https://avatars1.githubusercontent.com/u/50591491?s=460&u=540db4411d6f8528c4aa560f94968e412c3680d0&v=4"
+            />
+            <h3 class="my-3">Dev Sharma</h3>
           </div>
         </div>
       </div>
-      <!-- Canvas with video  -->
-      <!-- Posture Output  -->
     </div>
+    <!-- Canvas with video  -->
+    <!-- Posture Output  -->
   </body>
 </html>
