@@ -18,6 +18,7 @@ We first trained the model on the Google API to detect good posture/bad posture 
 We created a notification service so that the user can use any other site and simultaneously get notified if their posture is bad. We have also included <strong>
 EchoAR models to educate </strong> the children about the harms of sitting in a bad position and importance of healthy eyes 👀.
 
+
 ### How We built it 💡
 
 1. The website UI/UX was designed using Figma and then developed using HTML, CSS and JavaScript.Tensorflow.js was used to detect pose and JavaScript API to send notifications.
@@ -25,6 +26,8 @@ EchoAR models to educate </strong> the children about the harms of sitting in a 
 3. For training our model we used our own image as the train data and tested it in different settings.
 4. This model is then used to classify the users video feed to assess their pose and detect if they are slouching or if they are too close too screen or are sitting in a generally a bad pose.
 5. If the user sits in a bad posture for a few seconds then the bot sends a notificaiton to the user to correct their posture or move away from the screen.
+<p align="center">
+<img src="https://raw.githubusercontent.com/cryptus-neoxys/pose-bot/main/assets/img/Teachable%20Machine%20Demo.gif?token=AMB7OAY62XDXUD7UAM547QS7YOFKQ" width="220" height = "400" ></p>
 
 ### Challenges we ran into 🧠
 
@@ -81,6 +84,7 @@ Include more functionality like screen time, and detecting if the user is holdin
 - [x] CSS
 - [x] Javascript
   - Tensorflow.js
+  - Web Browser API
 - [x] Google API
 - [x] EchoAR
 - [x] Google Poly
