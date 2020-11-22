@@ -96,6 +96,10 @@ Include more functionality like screen time, and detecting if the user is holdin
 - 🕸 [The Website](https://pose-bot.vercel.app/)
 - 🖥 [The Figma Prototype](https://www.figma.com/file/utEHzshb9zHSB0v3Kp7Rby/Untitled?node-id=0%3A1)
 
+### Video 🎥
+
+🎬 <a href="https://youtu.be/MpkDf_lkL58\"> Demo Video Link</a>
+
 ### 3️⃣ Cheers to the team 🥂
 
 - [Apurva Sharma](https://github.com/Apurva-tech)
